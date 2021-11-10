@@ -25,7 +25,8 @@ class GpsStatusAdapter : RecyclerView.Adapter<GpsStatusAdapter.ViewHolder>() {
     }
 
     override fun getItemCount(): Int {
-        return
+        return 0
     }
+
 
 }
