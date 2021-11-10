@@ -1,0 +1,15 @@
+<resources>
+    <string name="app_name">GPS App</string>
+
+    <!-- GPS Status Fragment -->
+    <string name="gps_latitude_label">Lat</string>
+    <string name="gps_longitude_label">Long</string>
+    <string name="gps_altitude_label">Alt</string>
+    <string name="gps_altitude_msl_label">Alt-msl</string>
+    <string name="gps_speed_label">Speed</string>
+    <string name="gps_fix_time_label">Time</string>
+    <string name="gps_ttff_label">TTFF</string>
+    <string name="gps_accuracy_label">Accur</string>
+    <string name="gps_num_sats_label">#Sats</string>
+    <string name="gps_bearing_label">Bearing</string>
+</resources>
