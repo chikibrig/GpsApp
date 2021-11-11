@@ -15,23 +15,13 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
 
-    private lateinit var statusGnss: GnssStatus
-
-    private lateinit var gnssStatusListener: GnssStatus.Callback
-    private lateinit var gnssMeasurementsListener: GnssMeasurementsEvent.Callback
-    private lateinit var locationManager: LocationManager
-
-
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
-        locationManager = this.getSystemService(LOCATION_SERVICE) as LocationManager
 
         setGpsStatusFragment()
-        addStatusListener()
-        addGnssMeasurementsListener()
 
     }
 
@@ -42,33 +32,5 @@ class MainActivity : AppCompatActivity() {
             .commit()
     }
 
-    private fun addStatusListener() {
-        gnssStatusListener = object : GnssStatus.Callback() {
-
-            override fun onSatelliteStatusChanged(status: GnssStatus) {
-                super.onSatelliteStatusChanged(status)
-                statusGnss = status
-            }
-        }
-        if (ActivityCompat.checkSelfPermission(
-                this,
-                Manifest.permission.ACCESS_FINE_LOCATION
-            ) != PackageManager.PERMISSION_GRANTED
-        ) {
-            return
-        }
-        locationManager.registerGnssStatusCallback(gnssStatusListener)
-    }
-
-    private fun addGnssMeasurementsListener() {
-        gnssMeasurementsListener = object : GnssMeasurementsEvent.Callback(){
-            override fun onGnssMeasurementsReceived(eventArgs: GnssMeasurementsEvent?) {
-                super.onGnssMeasurementsReceived(eventArgs)
-                for (measurement in eventArgs?.measurements!!){
-                    Log.d("MainActivity", "${measurement.toString()}")
-                }
-            }
-        }
-    }
 }
 

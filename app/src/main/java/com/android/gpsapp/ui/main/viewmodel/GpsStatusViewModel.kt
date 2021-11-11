@@ -177,9 +177,6 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
                         numSatsInView++
                     }
                 } else {
-                    // This shouldn't happen - we found a satellite signal with the same constellation,
-                    // sat ID, and carrier frequency
-                    // (including multiple "unknown" or "unsupported" frequencies) as an existing one
                     duplicateCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(status), status)
                 }
             }

@@ -225,6 +225,16 @@
         card_view:layout_constraintStart_toStartOf="parent"
         card_view:layout_constraintTop_toBottomOf="@id/status_location_card" />
 
+    <Button
+        android:id="@+id/btn_start_gps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="8dp"
+        android:text="find Location"
+        card_view:layout_constraintEnd_toEndOf="parent"
+        card_view:layout_constraintStart_toStartOf="parent"
+        card_view:layout_constraintTop_toBottomOf="@id/btn_check_permissions" />
+
     <androidx.cardview.widget.CardView
         android:id="@+id/gnss_status_card"
         android:layout_width="fill_parent"
@@ -236,7 +246,7 @@
         card_view:cardUseCompatPadding="true"
         card_view:layout_constraintEnd_toEndOf="parent"
         card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/btn_check_permissions">
+        card_view:layout_constraintTop_toBottomOf="@id/btn_start_gps">
 
         <HorizontalScrollView
             android:id="@+id/gnss_status_scrollview"
