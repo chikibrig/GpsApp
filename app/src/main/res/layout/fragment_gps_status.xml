@@ -1,296 +1,215 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:card_view="http://schemas.android.com/apk/res-auto"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools">
 
-    <androidx.cardview.widget.CardView
-        android:id="@+id/status_location_card"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardUseCompatPadding="true"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toTopOf="parent">
+    <data>
 
-        <TableLayout
-            android:id="@+id/lat_long_table"
-            android:layout_width="wrap_content"
+        <variable
+            name="view_model"
+            type="com.android.gpsapplication.ui.screens.statusscreen.GpsStatusViewModel" />
+    </data>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/status_location_card"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="@dimen/status_margin"
-            android:gravity="center_horizontal"
-            card_view:layout_constraintBottom_toBottomOf="parent"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:layout_constraintEnd_toEndOf="parent"
             card_view:layout_constraintStart_toStartOf="parent"
             card_view:layout_constraintTop_toTopOf="parent">
 
-            <TableRow>
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_margin="8dp">
 
                 <TextView
                     android:id="@+id/latitude_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_latitude_label" />
-
-                <TextView
-                    android:id="@+id/latitude"
-                    style="@style/info_value" />
-
-                <TextView
-                    android:id="@+id/fix_time_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_fix_time_label" />
-
-                <TextView
-                    android:id="@+id/fix_time"
-                    style="@style/info_value" />
-
-                <TextView
-                    android:id="@+id/fix_time_error"
-                    style="@style/info_value_error"
-                    android:visibility="gone" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/longitude_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_longitude_label" />
-
-                <TextView
-                    android:id="@+id/longitude"
-                    style="@style/info_value" />
-
-                <TextView
-                    android:id="@+id/gps_ttff_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_ttff_label" />
-
-                <TextView
-                    android:id="@+id/ttff"
-                    style="@style/info_value" />
-            </TableRow>
-
-            <TableRow>
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude"
+                    android:textSize="20sp"
+                    card_view:layout_constraintEnd_toStartOf="@id/altitude_label"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
                     android:id="@+id/altitude_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_altitude_label" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Altitude"
+                    android:textSize="20sp"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toEndOf="@id/latitude_label"
+                    card_view:layout_constraintTop_toTopOf="parent" />
 
                 <TextView
-                    android:id="@+id/altitude"
-                    style="@style/info_value" />
+                    android:id="@+id/latitude_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    card_view:layout_constraintStart_toStartOf="@id/latitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/latitude_label"
+                    tools:text="00.000000000" />
 
                 <TextView
-                    android:id="@+id/hor_vert_accuracy_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_accuracy_label" />
+                    android:id="@+id/altitude_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    card_view:layout_constraintStart_toStartOf="@id/altitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/altitude_label"
+                    tools:text="00.00" />
 
                 <TextView
-                    android:id="@+id/hor_vert_accuracy"
-                    style="@style/info_value" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/altitude_msl_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_altitude_msl_label" />
+                    android:id="@+id/latitude_accuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    card_view:layout_constraintStart_toStartOf="@id/latitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/latitude_value"
+                    tools:text="00.00" />
 
                 <TextView
-                    android:id="@+id/altitude_msl"
-                    style="@style/info_value" />
+                    android:id="@+id/altitude_accuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    card_view:layout_constraintStart_toStartOf="@id/altitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/altitude_value"
+                    tools:text="00.00" />
+
+                <TextView
+                    android:id="@+id/longitude_label"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Longitude"
+                    android:textSize="20sp"
+                    card_view:layout_constraintEnd_toStartOf="@id/altitude_accuracy"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toStartOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/latitude_accuracy" />
+
+                <TextView
+                    android:id="@+id/time"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Time"
+                    android:textSize="20sp"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintHorizontal_bias="0.5"
+                    card_view:layout_constraintStart_toEndOf="@id/longitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/altitude_accuracy" />
+
+                <TextView
+                    android:id="@+id/longitude_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    card_view:layout_constraintStart_toStartOf="@id/latitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/longitude_label"
+                    tools:text="00.000000000" />
+
+                <TextView
+                    android:id="@+id/time_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="20sp"
+                    card_view:layout_constraintStart_toStartOf="@id/altitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/time"
+                    tools:text="00:00:00" />
+
+                <TextView
+                    android:id="@+id/longitude_accuracy"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    card_view:layout_constraintStart_toStartOf="@id/longitude_value"
+                    card_view:layout_constraintTop_toBottomOf="@id/longitude_value"
+                    tools:text="00.00" />
 
                 <TextView
                     android:id="@+id/num_sats_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_num_sats_label" />
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:text="Satellites"
+                    android:textSize="18sp"
+                    card_view:layout_constraintStart_toStartOf="@id/longitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/longitude_accuracy" />
 
                 <TextView
-                    android:id="@+id/num_sats"
-                    style="@style/info_value" />
-            </TableRow>
+                    android:id="@+id/num_sats_value"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:textSize="16sp"
+                    card_view:layout_constraintStart_toStartOf="@id/altitude_label"
+                    card_view:layout_constraintTop_toBottomOf="@id/longitude_accuracy"
+                    tools:text="0" />
 
-            <TableRow>
+                <Button
+                    android:id="@+id/btn_start"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:text="start"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toEndOf="parent"
+                    card_view:layout_constraintTop_toBottomOf="@id/num_sats_value" />
 
-                <TextView
-                    android:id="@+id/speed_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_speed_label" />
+                <Button
+                    android:id="@+id/btn_stop"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="8dp"
+                    android:text="stop"
+                    card_view:layout_constraintBottom_toBottomOf="parent"
+                    card_view:layout_constraintEnd_toStartOf="@id/btn_start"
+                    card_view:layout_constraintTop_toBottomOf="@id/num_sats_value" />
 
-                <TextView
-                    android:id="@+id/speed"
-                    style="@style/info_value" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+        </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/bearing_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="@string/gps_bearing_label" />
+        <androidx.cardview.widget.CardView
+            android:id="@+id/gnss_status_card"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/status_location_card">
 
-                <TextView
-                    android:id="@+id/bearing"
-                    style="@style/info_value" />
-            </TableRow>
+            <HorizontalScrollView
+                android:id="@+id/gnss_sats_status_scrollview"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-            <TableRow
-                android:id="@+id/speed_bearing_acc_row"
-                android:visibility="gone">
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/gnss_sats_status_list"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="5dp"
+                    tools:listitem="@layout/status_row_item" />
+            </HorizontalScrollView>
+        </androidx.cardview.widget.CardView>
 
-                <TextView
-                    android:id="@+id/speed_acc_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="gps_speed_acc_label" />
-
-                <TextView
-                    android:id="@+id/speed_acc"
-                    style="@style/info_value" />
-
-                <TextView
-                    android:id="@+id/bearing_acc_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="gps_bearing_acc_label" />
-
-                <TextView
-                    android:id="@+id/bearing_acc"
-                    style="@style/info_value" />
-            </TableRow>
-
-            <TableRow>
-
-                <TextView
-                    android:id="@+id/pdop_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="pdop_label"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/pdop"
-                    style="@style/info_value"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/hvdop_label"
-                    style="@style/info_label"
-                    android:layout_gravity="right"
-                    android:layout_marginRight="@dimen/status_label_right_margin"
-                    android:text="hvdop_label"
-                    android:visibility="gone" />
-
-                <TextView
-                    android:id="@+id/hvdop"
-                    style="@style/info_value"
-                    android:visibility="gone" />
-            </TableRow>
-        </TableLayout>
-    </androidx.cardview.widget.CardView>
-
-    <Button
-        android:id="@+id/btn_check_permissions"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="check permissions"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/status_location_card" />
-
-    <Button
-        android:id="@+id/btn_start_gps"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:text="find Location"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/btn_check_permissions" />
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/gnss_status_card"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:foreground="?attr/selectableItemBackground"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardUseCompatPadding="true"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/btn_start_gps">
-
-        <HorizontalScrollView
-            android:id="@+id/gnss_status_scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/gnss_status_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                tools:listitem="@layout/status_row_item"/>
-        </HorizontalScrollView>
-    </androidx.cardview.widget.CardView>
-
-
-    <androidx.cardview.widget.CardView
-        android:id="@+id/sbas_status_card"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:layout_margin="8dp"
-        android:foreground="?attr/selectableItemBackground"
-        card_view:cardCornerRadius="4dp"
-        card_view:cardUseCompatPadding="true"
-        card_view:layout_constraintEnd_toEndOf="parent"
-        card_view:layout_constraintStart_toStartOf="parent"
-        card_view:layout_constraintTop_toBottomOf="@id/gnss_status_card">
-
-        <HorizontalScrollView
-            android:id="@+id/sbas_status_scrollview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/sbas_status_list"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_margin="5dp"
-                tools:listitem="@layout/status_row_item"/>
-
-        </HorizontalScrollView>
-    </androidx.cardview.widget.CardView>
-
-
-
-</androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

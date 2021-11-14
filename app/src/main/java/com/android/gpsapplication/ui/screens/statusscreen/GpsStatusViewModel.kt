@@ -1,20 +1,26 @@
-package com.android.gpsapp.ui.main.viewmodel
+package com.android.gpsapplication.ui.screens.statusscreen
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.android.gpsapp.data.model.*
-import com.android.gpsapp.data.model.SatelliteStatus.Companion.NO_DATA
-import com.android.gpsapp.utils.CarrierFreqUtils
-import com.android.gpsapp.utils.CarrierFreqUtils.CF_UNKNOWN
-import com.android.gpsapp.utils.CarrierFreqUtils.CF_UNSUPPORTED
-import com.android.gpsapp.utils.SatelliteUtils
-import kotlin.collections.HashSet
+import com.android.gpsapplication.model.*
+import com.android.gpsapplication.model.SatelliteStatus.Companion.NO_DATA
+import com.android.gpsapplication.utils.CarrierFreqUtils
+import com.android.gpsapplication.utils.CarrierFreqUtils.Companion.CF_UNKNOWN
+import com.android.gpsapplication.utils.CarrierFreqUtils.Companion.CF_UNSUPPORTED
+import com.android.gpsapplication.utils.SatelliteUtils
+import java.util.*
 
 class GpsStatusViewModel(application: Application) : AndroidViewModel(application) {
 
-    private var gnssSatellitesLd = MutableLiveData<Map<String, Satellite>>()
-    private var sbasSatellitesLd = MutableLiveData<Map<String, Satellite>>()
+    private val _gnssSatelliteLiveData = MutableLiveData<Map<String, Satellite>>()
+    val gnssSatelliteLiveData: MutableLiveData<Map<String, Satellite>> = _gnssSatelliteLiveData
+
+    private val _sbasSatelliteLiveData = MutableLiveData<Map<String, Satellite>>()
+    val sbasSatelliteLiveData: MutableLiveData<Map<String, Satellite>> = _sbasSatelliteLiveData
+
+    var satelliteLiveData = MutableLiveData<List<SatelliteStatus>>()
 
     private var isDualFrequencyPerSatInView = false
 
@@ -42,11 +48,13 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
 
     fun setStatuses(gnssStatuses: List<SatelliteStatus>, sbasStatuses: List<SatelliteStatus>) {
 
-        val gnssSatellites: ConstellationFamily = getSatellitesFromStatuses(gnssStatuses)
+        val gnssSatellites = getSatellitesFromStatuses(gnssStatuses)
         val sbasSatellites: ConstellationFamily = getSatellitesFromStatuses(sbasStatuses)
 
-        gnssSatellitesLd.setValue(gnssSatellites.satellites)
-        sbasSatellitesLd.setValue(sbasSatellites.satellites)
+        satelliteLiveData.postValue(gnssStatuses)
+
+        gnssSatelliteLiveData.value = gnssSatellites.satellites
+        sbasSatelliteLiveData.value = sbasSatellites.satellites
 
         val numSignalsUsed = gnssSatellites.satelliteMetadata.numSignalsUsed +
                 sbasSatellites.satelliteMetadata.numSignalsUsed
@@ -110,7 +118,7 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
             // Get carrier label
             val carrierLabel: String = CarrierFreqUtils.getCarrierFrequencyLabel(status)
             if (carrierLabel == CF_UNKNOWN) {
-                unknownCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(status), status)
+                unknownCarrierStatuses[SatelliteUtils.createGnssStatusKey(status)] = status
             }
             if (carrierLabel != CF_UNKNOWN && carrierLabel != CF_UNSUPPORTED) {
                 // Save the supported GNSS or SBAS CF
@@ -177,7 +185,7 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
                         numSatsInView++
                     }
                 } else {
-                    duplicateCarrierStatuses.put(SatelliteUtils.createGnssStatusKey(status), status)
+                    duplicateCarrierStatuses[SatelliteUtils.createGnssStatusKey(status)] = status
                 }
             }
         }
@@ -195,11 +203,11 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
     }
 
     private fun resetAll() {
-        gnssSatellitesLd.setValue(null)
-        sbasSatellitesLd.setValue(null)
-        satelliteMetadata.setValue(null)
+        gnssSatelliteLiveData.value = null
+        sbasSatelliteLiveData.value = null
+        satelliteMetadata.value = null
         duplicateCarrierStatuses = HashMap<String, SatelliteStatus>()
-        unknownCarrierStatuses = HashMap<String, SatelliteStatus>()
+        unknownCarrierStatuses = HashMap()
         supportedGnss = HashSet()
         supportedSbas = HashSet()
         supportedGnssCfs = HashSet()
@@ -215,5 +223,4 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
         super.onCleared()
         resetAll()
     }
-
 }

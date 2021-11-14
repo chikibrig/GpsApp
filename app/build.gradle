@@ -8,9 +8,9 @@ android {
     compileSdk 31
 
     defaultConfig {
-        applicationId "com.android.gpsapp"
+        applicationId "com.android.gpsapplication"
         minSdk 26
-        targetSdk 30
+        targetSdk 29
         versionCode 1
         versionName "1.0"
 
@@ -30,8 +30,8 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
-    buildFeatures {
-        viewBinding true
+    dataBinding {
+        enabled true
     }
 }
 
@@ -41,6 +41,8 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.3.1'
     implementation 'com.google.android.material:material:1.4.0'
     implementation 'androidx.constraintlayout:constraintlayout:2.1.1'
+
+    implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.4.0'
 
     testImplementation 'junit:junit:4.+'
     androidTestImplementation 'androidx.test.ext:junit:1.1.3'

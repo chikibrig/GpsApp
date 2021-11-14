@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <!-- Row item -->
     <dimen name="status_margin">4dp</dimen>
     <dimen name="column_padding">3dp</dimen>
     <dimen name="status_label_right_margin">4dp</dimen>

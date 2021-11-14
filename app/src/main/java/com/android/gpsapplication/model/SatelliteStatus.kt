@@ -1,4 +1,4 @@
-package com.android.gpsapp.data.model
+package com.android.gpsapplication.model
 
 data class SatelliteStatus (
     val svid: Int,

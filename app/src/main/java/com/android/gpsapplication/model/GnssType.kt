@@ -1,4 +1,4 @@
-package com.android.gpsapp.data.model
+package com.android.gpsapplication.model
 
 enum class GnssType {
     NAVSTAR, GLONASS, GALILEO, QZSS, BEIDOU, IRNSS, SBAS, UNKNOWN;

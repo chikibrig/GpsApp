@@ -1,4 +1,4 @@
-package com.android.gpsapp
+package com.android.gpsapplication
 
 import org.junit.Test
 
