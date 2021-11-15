@@ -211,5 +211,24 @@
             </HorizontalScrollView>
         </androidx.cardview.widget.CardView>
 
+        <androidx.cardview.widget.CardView
+            android:id="@+id/gnss_chart_card"
+            android:layout_width="fill_parent"
+            android:layout_height="200dp"
+            android:layout_gravity="center"
+            android:layout_margin="8dp"
+            android:foreground="?attr/selectableItemBackground"
+            card_view:cardCornerRadius="4dp"
+            card_view:cardUseCompatPadding="true"
+            card_view:layout_constraintEnd_toEndOf="parent"
+            card_view:layout_constraintStart_toStartOf="parent"
+            card_view:layout_constraintTop_toBottomOf="@id/gnss_status_card">
+
+            <com.github.mikephil.charting.charts.BarChart
+                android:id="@+id/signal_chart"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </androidx.cardview.widget.CardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
 </layout>

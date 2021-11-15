@@ -22,6 +22,11 @@ import com.android.gpsapplication.databinding.FragmentGpsStatusBinding
 import com.android.gpsapplication.model.GnssType
 import com.android.gpsapplication.model.SatelliteStatus
 import com.android.gpsapplication.utils.SatelliteUtils
+import com.github.mikephil.charting.charts.BarChart
+import com.github.mikephil.charting.data.BarData
+import com.github.mikephil.charting.data.BarDataSet
+import com.github.mikephil.charting.data.BarEntry
+import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -34,10 +39,15 @@ class GpsStatusFragment : Fragment() {
     private lateinit var locationManager: LocationManager
 
     private lateinit var latitudeView: TextView
+    private lateinit var latitudeAccView: TextView
     private lateinit var longitudeView: TextView
+    private lateinit var longitudeAccView: TextView
     private lateinit var altitudeView: TextView
+    private lateinit var altitudeAccView: TextView
     private lateinit var satelliteNum: TextView
     private lateinit var timeView: TextView
+    private lateinit var chart: BarChart
+
     private lateinit var startButton: Button
     private lateinit var stopButton: Button
 
@@ -63,9 +73,13 @@ class GpsStatusFragment : Fragment() {
         binding.lifecycleOwner = this
 
         with(binding) {
+            chart = signalChart
             latitudeView = latitudeValue
+            latitudeAccView = latitudeAccuracy
             longitudeView = longitudeValue
+            longitudeAccView = longitudeAccuracy
             altitudeView = altitudeValue
+            altitudeAccView = altitudeAccuracy
             satelliteNum = numSatsValue
             timeView = timeValue
             startButton = btnStart
@@ -96,7 +110,18 @@ class GpsStatusFragment : Fragment() {
     private fun setSatelliteListListener() {
         viewModel.satelliteLiveData.observe(viewLifecycleOwner, {
             statusAdapter.setSatelliteList(it)
+            setBarChartValues(it)
         })
+    }
+
+    private fun setBarChartValues(list: List<SatelliteStatus>) {
+        val barEntries = mutableListOf<BarEntry>()
+        var i = 0
+        while (i < list.size) {
+            barEntries.add(i, BarEntry(list[i].svid.toFloat(), list[i].cn0DbHz))
+            i++
+        }
+        chart.data = BarData(BarDataSet(barEntries, "Signals"))
     }
 
     private val locationListener = object : LocationListener {
@@ -107,12 +132,13 @@ class GpsStatusFragment : Fragment() {
             longitudeView.text = location.longitude.toString()
             altitudeView.text = location.altitude.toString()
             timeView.text = timeAndDateFormat.format(location.time)
+            altitudeAccView.text = location.verticalAccuracyMeters.toString()
+            latitudeAccView.text = location.accuracy.toString()
+            longitudeAccView.text = location.accuracy.toString()
 
         }
 
-        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {
-
-        }
+        override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
         override fun onProviderEnabled(provider: String) {
             if (startButton.isEnabled) {
@@ -122,6 +148,7 @@ class GpsStatusFragment : Fragment() {
         }
 
         override fun onProviderDisabled(provider: String) {
+            startButton.isEnabled = false
             unregisterAll()
             Toast.makeText(requireContext(), "Gps disabled", Toast.LENGTH_SHORT).show()
         }
@@ -181,7 +208,7 @@ class GpsStatusFragment : Fragment() {
     private fun registerLocation() {
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            3000,
+            1000,
             0f,
             locationListener
         )

@@ -31,19 +31,28 @@ class SatelliteStatusListAdapter : RecyclerView.Adapter<SatelliteStatusListAdapt
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val satellite = satelliteList[position]
-        with(holder.binding) {
-            svId.text = satellite.svid.toString()
-            signal.text = satellite.cn0DbHz.toString()
-            elevation.text = satellite.elevationDegrees.toString()
-            azimuth.text = satellite.azimuthDegrees.toString()
-            val flags = CharArray(3)
-            flags[0] = if (!satellite.hasAlmanac) ' ' else 'A'
-            flags[1] = if (!satellite.hasEphemeris) ' ' else 'E'
-            flags[2] = if (!satellite.usedInFix) ' ' else 'U'
+        if (position == 0) {
+            with(holder.binding) {
+                svId.text = "Id"
+                signal.text = "C/N0"
+                elevation.text = "Elev"
+                azimuth.text = "Azim"
+            }
+        } else {
+            val satellite = satelliteList[position - 1]
+            with(holder.binding) {
+                svId.text = satellite.svid.toString()
+                signal.text = satellite.cn0DbHz.toString()
+                elevation.text = satellite.elevationDegrees.toString()
+                azimuth.text = satellite.azimuthDegrees.toString()
+//                val flags = CharArray(3)
+//                flags[0] = if (!satellite.hasAlmanac) ' ' else 'A'
+//                flags[1] = if (!satellite.hasEphemeris) ' ' else 'E'
+//                flags[2] = if (!satellite.usedInFix) ' ' else 'U'
+            }
         }
     }
 
-    override fun getItemCount(): Int = satelliteList.size
+    override fun getItemCount(): Int = satelliteList.size + 1
 
 }

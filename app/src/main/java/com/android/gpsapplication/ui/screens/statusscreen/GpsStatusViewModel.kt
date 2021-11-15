@@ -49,7 +49,7 @@ class GpsStatusViewModel(application: Application) : AndroidViewModel(applicatio
     fun setStatuses(gnssStatuses: List<SatelliteStatus>, sbasStatuses: List<SatelliteStatus>) {
 
         val gnssSatellites = getSatellitesFromStatuses(gnssStatuses)
-        val sbasSatellites: ConstellationFamily = getSatellitesFromStatuses(sbasStatuses)
+        val sbasSatellites = getSatellitesFromStatuses(sbasStatuses)
 
         satelliteLiveData.postValue(gnssStatuses)
 
