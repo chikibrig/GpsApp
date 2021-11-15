@@ -57,7 +57,7 @@
                     android:id="@+id/latitude_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     card_view:layout_constraintStart_toStartOf="@id/latitude_label"
                     card_view:layout_constraintTop_toBottomOf="@id/latitude_label"
                     tools:text="00.000000000" />
@@ -66,7 +66,7 @@
                     android:id="@+id/altitude_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     card_view:layout_constraintStart_toStartOf="@id/altitude_label"
                     card_view:layout_constraintTop_toBottomOf="@id/altitude_label"
                     tools:text="00.00" />
@@ -117,7 +117,7 @@
                     android:id="@+id/longitude_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     card_view:layout_constraintStart_toStartOf="@id/latitude_label"
                     card_view:layout_constraintTop_toBottomOf="@id/longitude_label"
                     tools:text="00.000000000" />

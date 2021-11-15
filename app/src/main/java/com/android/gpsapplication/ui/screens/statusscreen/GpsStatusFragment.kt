@@ -21,7 +21,6 @@ import com.android.gpsapplication.R
 import com.android.gpsapplication.databinding.FragmentGpsStatusBinding
 import com.android.gpsapplication.model.GnssType
 import com.android.gpsapplication.model.SatelliteStatus
-import com.android.gpsapplication.utils.PermissionsUtils
 import com.android.gpsapplication.utils.SatelliteUtils
 import java.text.SimpleDateFormat
 import java.util.*
@@ -77,13 +76,11 @@ class GpsStatusFragment : Fragment() {
         setSatelliteListAdapter()
 
         startButton.setOnClickListener {
-            Toast.makeText(requireContext(), "Start listening GPS", Toast.LENGTH_SHORT).show()
             registerAll()
         }
 
         stopButton.setOnClickListener {
             unregisterAll()
-            Toast.makeText(requireContext(), "Stop listening GPS", Toast.LENGTH_SHORT).show()
         }
 
         return binding.root
@@ -144,6 +141,8 @@ class GpsStatusFragment : Fragment() {
             satelliteNum.text = status.satelliteCount.toString()
             val length = status.satelliteCount
             var cvCount = 0
+            gnssStatus.clear()
+            sbasStatus.clear()
             while (cvCount < length) {
                 val satStatus = SatelliteStatus(
                     status.getSvid(cvCount),
@@ -172,19 +171,17 @@ class GpsStatusFragment : Fragment() {
             }
             viewModel.setStatuses(gnssStatus, sbasStatus)
             statusAdapter.notifyDataSetChanged()
-            Log.d("satelliteStatus", "${status.satelliteCount}")
         }
     }
 
     private val nmeaMessageListener = OnNmeaMessageListener { message, timestamp ->
-        Log.d("nmeaMessageListener", "time: $timestamp")
     }
 
     @SuppressLint("MissingPermission")
     private fun registerLocation() {
         locationManager.requestLocationUpdates(
             LocationManager.GPS_PROVIDER,
-            1000,
+            3000,
             0f,
             locationListener
         )
