@@ -5,14 +5,13 @@ import android.location.*
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.SwitchCompat
 import androidx.databinding.DataBindingUtil
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -26,7 +25,6 @@ import com.github.mikephil.charting.charts.BarChart
 import com.github.mikephil.charting.data.BarData
 import com.github.mikephil.charting.data.BarDataSet
 import com.github.mikephil.charting.data.BarEntry
-import org.w3c.dom.Text
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -48,8 +46,7 @@ class GpsStatusFragment : Fragment() {
     private lateinit var timeView: TextView
     private lateinit var chart: BarChart
 
-    private lateinit var startButton: Button
-    private lateinit var stopButton: Button
+    private lateinit var switch: SwitchCompat
 
     private lateinit var locationUpd: Location
 
@@ -82,21 +79,19 @@ class GpsStatusFragment : Fragment() {
             altitudeAccView = altitudeAccuracy
             satelliteNum = numSatsValue
             timeView = timeValue
-            startButton = btnStart
-            stopButton = btnStop
+            switch = searchingLocationStatus
         }
 
         setSatelliteListListener()
         setSatelliteListAdapter()
 
-        startButton.setOnClickListener {
-            registerAll()
+        switch.setOnClickListener {
+            if (switch.isChecked) {
+                registerAll()
+            } else {
+                unregisterAll()
+            }
         }
-
-        stopButton.setOnClickListener {
-            unregisterAll()
-        }
-
         return binding.root
     }
 
@@ -141,23 +136,23 @@ class GpsStatusFragment : Fragment() {
         override fun onStatusChanged(provider: String?, status: Int, extras: Bundle?) {}
 
         override fun onProviderEnabled(provider: String) {
-            if (startButton.isEnabled) {
+            Toast.makeText(requireContext(), "Gps enabled", Toast.LENGTH_SHORT).show()
+            if (switch.isChecked) {
                 registerAll()
             }
-            Toast.makeText(requireContext(), "Gps enabled", Toast.LENGTH_SHORT).show()
         }
 
         override fun onProviderDisabled(provider: String) {
-            startButton.isEnabled = false
-            unregisterAll()
             Toast.makeText(requireContext(), "Gps disabled", Toast.LENGTH_SHORT).show()
+            if (switch.isChecked) {
+                unregisterAll()
+            }
         }
     }
 
     private val gnssNavigationMessageListener = object : GnssNavigationMessage.Callback() {
         override fun onGnssNavigationMessageReceived(event: GnssNavigationMessage?) {
             super.onGnssNavigationMessageReceived(event)
-
         }
     }
 
@@ -188,7 +183,8 @@ class GpsStatusFragment : Fragment() {
                             status.getCarrierFrequencyHz(cvCount).toDouble()
                     }
                     if (satStatus.gnssType === GnssType.SBAS) {
-                        satStatus.sbasType = SatelliteUtils.getSbasConstellationType(satStatus.svid)
+                        satStatus.sbasType =
+                            SatelliteUtils.getSbasConstellationType(satStatus.svid)
                         sbasStatus.add(satStatus)
                     } else {
                         gnssStatus.add(satStatus)
@@ -261,5 +257,4 @@ class GpsStatusFragment : Fragment() {
         unregisterGnssStatus();
         unregisterNmea();
     }
-
 }

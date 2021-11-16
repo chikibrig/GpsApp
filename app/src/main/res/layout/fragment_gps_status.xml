@@ -126,7 +126,7 @@
                     android:id="@+id/time_value"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:textSize="20sp"
+                    android:textSize="18sp"
                     card_view:layout_constraintStart_toStartOf="@id/altitude_label"
                     card_view:layout_constraintTop_toBottomOf="@id/time"
                     tools:text="00:00:00" />
@@ -160,26 +160,15 @@
                     card_view:layout_constraintTop_toBottomOf="@id/longitude_accuracy"
                     tools:text="0" />
 
-                <Button
-                    android:id="@+id/btn_start"
+                <androidx.appcompat.widget.SwitchCompat
+                    android:id="@+id/searching_location_status"
+                    android:text="Searching gnss"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:text="start"
+                    android:textColor="#5E5E5E"
                     card_view:layout_constraintBottom_toBottomOf="parent"
                     card_view:layout_constraintEnd_toEndOf="parent"
-                    card_view:layout_constraintTop_toBottomOf="@id/num_sats_value" />
-
-                <Button
-                    android:id="@+id/btn_stop"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="8dp"
-                    android:text="stop"
-                    card_view:layout_constraintBottom_toBottomOf="parent"
-                    card_view:layout_constraintEnd_toStartOf="@id/btn_start"
-                    card_view:layout_constraintTop_toBottomOf="@id/num_sats_value" />
+                    card_view:layout_constraintTop_toBottomOf="@id/num_sats_value"/>
 
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.cardview.widget.CardView>
