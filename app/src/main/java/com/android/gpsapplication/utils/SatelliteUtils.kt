@@ -1,13 +1,7 @@
 package com.android.gpsapplication.utils
 
 
-import android.content.Context
-import android.hardware.Sensor
-import android.hardware.SensorManager
-import android.location.GnssMeasurement
 import android.location.GnssStatus
-import android.location.Location
-import android.location.LocationManager
 import android.os.Build
 import androidx.annotation.RequiresApi
 import com.android.gpsapplication.model.GnssType
@@ -16,6 +10,10 @@ import com.android.gpsapplication.model.SbasType
 
 class SatelliteUtils {
     companion object {
+
+        val isGnssCarrierFrequenciesSupported: Boolean
+            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
+
         @RequiresApi(api = Build.VERSION_CODES.N)
         fun getGnssConstellationType(gnssConstellationType: Int): GnssType {
             return when (gnssConstellationType) {
@@ -49,57 +47,6 @@ class SatelliteUtils {
             return SbasType.UNKNOWN
         }
 
-        fun isRotationVectorSensorSupported(context: Context): Boolean {
-            val sensorManager = context
-                .getSystemService(Context.SENSOR_SERVICE) as SensorManager
-            return sensorManager.getDefaultSensor(Sensor.TYPE_ROTATION_VECTOR) != null
-        }
-
-        val isGnssStatusListenerSupported: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.N
-
-
-        val isGnssCarrierFrequenciesSupported: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
-        fun isVerticalAccuracySupported(location: Location): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && location.hasVerticalAccuracy()
-        }
-
-        val isSpeedAndBearingAccuracySupported: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.O
-
-        fun isAutomaticGainControlSupported(gnssMeasurement: GnssMeasurement): Boolean {
-            return Build.VERSION.SDK_INT >= Build.VERSION_CODES.O && gnssMeasurement.hasAutomaticGainControlLevelDb()
-        }
-
-        fun isAccumulatedDeltaRangeStateValid(accumulatedDeltaRangeState: Int): Boolean {
-            return GnssMeasurement.ADR_STATE_VALID and accumulatedDeltaRangeState == GnssMeasurement.ADR_STATE_VALID
-        }
-
-        fun isGnssAntennaInfoSupported(manager: LocationManager?): Boolean {
-            if (manager == null) {
-                return false
-            }
-            return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                manager.gnssCapabilities.hasAntennaInfo()
-            } else {
-                Build.VERSION.SDK_INT >= Build.VERSION_CODES.R && manager.gnssCapabilities.hasGnssAntennaInfo()
-            }
-        }
-
-        val isForceFullGnssMeasurementsSupported: Boolean
-            get() = Build.VERSION.SDK_INT >= Build.VERSION_CODES.S
-
-        @RequiresApi(api = Build.VERSION_CODES.S)
-        fun isGnssMeasurementsSupported(manager: LocationManager?): Boolean {
-            return manager != null && manager.gnssCapabilities.hasMeasurements()
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.S)
-        fun isNavigationMessagesSupported(manager: LocationManager?): Boolean {
-            return manager != null && manager.gnssCapabilities.hasNavigationMessages()
-        }
 
         fun createGnssSatelliteKey(status: SatelliteStatus): String {
             return if (status.gnssType === GnssType.SBAS) {

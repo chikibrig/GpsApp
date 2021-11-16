@@ -44,6 +44,7 @@ class GpsStatusFragment : Fragment() {
     private lateinit var altitudeAccView: TextView
     private lateinit var satelliteNum: TextView
     private lateinit var timeView: TextView
+    private lateinit var speedView: TextView
     private lateinit var chart: BarChart
 
     private lateinit var switch: SwitchCompat
@@ -79,6 +80,7 @@ class GpsStatusFragment : Fragment() {
             altitudeAccView = altitudeAccuracy
             satelliteNum = numSatsValue
             timeView = timeValue
+            speedView = speedValue
             switch = searchingLocationStatus
         }
 
@@ -90,6 +92,7 @@ class GpsStatusFragment : Fragment() {
                 registerAll()
             } else {
                 unregisterAll()
+                clearView()
             }
         }
         return binding.root
@@ -116,7 +119,7 @@ class GpsStatusFragment : Fragment() {
             barEntries.add(i, BarEntry(list[i].svid.toFloat(), list[i].cn0DbHz))
             i++
         }
-        chart.data = BarData(BarDataSet(barEntries, "Signals"))
+        chart.data = BarData(BarDataSet(barEntries, "C/N0"))
     }
 
     private val locationListener = object : LocationListener {
@@ -129,7 +132,7 @@ class GpsStatusFragment : Fragment() {
             timeView.text = timeAndDateFormat.format(location.time)
             altitudeAccView.text = location.verticalAccuracyMeters.toString()
             latitudeAccView.text = location.accuracy.toString()
-            longitudeAccView.text = location.accuracy.toString()
+            speedView.text = location.speed.toString()
 
         }
 
@@ -197,7 +200,14 @@ class GpsStatusFragment : Fragment() {
         }
     }
 
-    private val nmeaMessageListener = OnNmeaMessageListener { message, timestamp ->
+    private val nmeaMessageListener = object : OnNmeaMessageListener {
+        override fun onNmeaMessage(message: String?, timestamp: Long) {
+            //TODO
+            /*Example inputs are:
+            * $GPGGA,032739.0,2804.732835,N,08224.639709,W,1,08,0.8,19.2,M,-24.0,M,,*5B
+            * $GNGNS,015002.0,2804.733672,N,08224.631117,W,AAN,09,1.1,78.9,-24.0,,*23
+            * $GNGGA,172814.00,2803.208136,N,08225.981423,W,1,08,1.1,-19.7,M,-24.8,M,,*5F*/
+        }
     }
 
     @SuppressLint("MissingPermission")
@@ -256,5 +266,17 @@ class GpsStatusFragment : Fragment() {
         unregisterNavigation();
         unregisterGnssStatus();
         unregisterNmea();
+    }
+
+    private fun clearView() {
+        latitudeView.text = ""
+        longitudeView.text = ""
+        altitudeView.text = ""
+        timeView.text = ""
+        altitudeAccView.text = ""
+        latitudeAccView.text = ""
+        satelliteNum.text = ""
+        speedView.text = ""
+        gnssStatus.clear()
     }
 }
